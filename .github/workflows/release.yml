@@ -26,6 +26,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -37,6 +39,12 @@ jobs:
       - name: Install dependencies
         working-directory: ./roquiz
         run: flutter pub get
+
+      - name: Generate contributors assets
+        working-directory: ./roquiz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: dart run bin/fetch_contributors.dart --avatars
 
       # --- Enable real release signing later (currently debug-signed) --------
       # 1. Create the upload keystore once, locally:
@@ -83,6 +91,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install Linux build dependencies
         run: |
@@ -99,6 +109,12 @@ jobs:
       - name: Install dependencies
         working-directory: ./roquiz
         run: flutter pub get
+
+      - name: Generate contributors assets
+        working-directory: ./roquiz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: dart run bin/fetch_contributors.dart --avatars
 
       - name: Build Linux (x64)
         working-directory: ./roquiz
@@ -122,6 +138,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -133,6 +151,12 @@ jobs:
       - name: Install dependencies
         working-directory: ./roquiz
         run: flutter pub get
+
+      - name: Generate contributors assets
+        working-directory: ./roquiz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: dart run bin/fetch_contributors.dart --avatars
 
       - name: Build web
         working-directory: ./roquiz
